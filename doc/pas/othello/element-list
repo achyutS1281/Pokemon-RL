@@ -1,0 +1,6 @@
+edu.bu.pas.othello
+edu.bu.pas.othello.agents
+edu.bu.pas.othello.game
+edu.bu.pas.othello.rendering
+edu.bu.pas.othello.traversal
+edu.bu.pas.othello.utils

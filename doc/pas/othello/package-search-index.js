@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"edu.bu.pas.othello"},{"l":"edu.bu.pas.othello.agents"},{"l":"edu.bu.pas.othello.game"},{"l":"edu.bu.pas.othello.rendering"},{"l":"edu.bu.pas.othello.traversal"},{"l":"edu.bu.pas.othello.utils"}];updateSearchResults();
