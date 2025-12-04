@@ -1,4 +1,4 @@
-package src.pas.pokemon.agents;
+package pas.pokemon.agents;
 
 
 // SYSTEM IMPORTS

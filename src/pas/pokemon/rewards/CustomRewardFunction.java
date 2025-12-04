@@ -1,4 +1,4 @@
-package src.pas.pokemon.rewards;
+package pas.pokemon.rewards;
 
 import edu.bu.pas.pokemon.agents.rewards.RewardFunction;
 import edu.bu.pas.pokemon.agents.rewards.RewardFunction.RewardType;
