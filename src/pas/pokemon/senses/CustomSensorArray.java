@@ -135,10 +135,13 @@ public class CustomSensorArray
                 effectiveness *= Type.getEffectivenessModifier(moveType, oppType2);
             }
 
-            // calculateDamage(Move move, int casterIdx, Pokemon caster, Pokemon target,
-            // boolean isCrit, boolean isRandom, int randomSeed, double effectiveness)
-            double damage = DamageEquation.calculateDamage(moveCore, myTeamIdx, myPokemonCore, oppPokemonCore, false,
-                    false, 0, effectiveness);
+            double damage = 0.0;
+            if (moveCore.getPower() != null) {
+                // calculateDamage(Move move, int casterIdx, Pokemon caster, Pokemon target,
+                // boolean isCrit, boolean isRandom, int randomSeed, double effectiveness)
+                damage = DamageEquation.calculateDamage(moveCore, myTeamIdx, myPokemonCore, oppPokemonCore, false,
+                        false, 0, effectiveness);
+            }
 
             // Normalize damage.
             sensors.set(0, idx++, Math.min(damage / 1000.0, 1.0));
