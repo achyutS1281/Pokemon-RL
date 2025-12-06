@@ -18,7 +18,7 @@ import edu.bu.pas.pokemon.nn.layers.ReLU;  // some activations (below too)
 
 
 // JAVA PROJECT IMPORTS
-import src.pas.pokemon.senses.CustomSensorArray;
+import pas.pokemon.senses.CustomSensorArray;
 import java.util.List;
 import java.util.Random;
 
@@ -45,7 +45,7 @@ public class PolicyAgent
 
     public void initializeSenses(Namespace args)
     {
-        SensorArray modelSenses = new CustomSensorArray();
+        SensorArray modelSenses = new CustomSensorArray(this);
 
         this.setSensorArray(modelSenses);
     }
