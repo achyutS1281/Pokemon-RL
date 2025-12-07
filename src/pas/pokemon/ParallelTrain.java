@@ -33,7 +33,7 @@ import edu.bu.pas.pokemon.core.Move;
 import edu.bu.pas.pokemon.core.Move.MoveView;
 import edu.bu.pas.pokemon.core.Team;
 import edu.bu.pas.pokemon.core.Pokemon;
-import pas.pokemon.BattlePoolExclude;
+import src.pas.pokemon.BattlePoolExclude;
 import edu.bu.pas.pokemon.execution.EvalBattleDriver;
 import edu.bu.pas.pokemon.execution.OutcomeUtilityResult;
 import edu.bu.pas.pokemon.execution.Result;
