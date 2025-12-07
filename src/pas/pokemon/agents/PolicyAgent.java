@@ -18,7 +18,7 @@ import edu.bu.pas.pokemon.nn.layers.ReLU;  // some activations (below too)
 
 
 // JAVA PROJECT IMPORTS
-import pas.pokemon.senses.CustomSensorArray;
+import src.pas.pokemon.senses.CustomSensorArray;
 import java.util.List;
 import java.util.Random;
 
