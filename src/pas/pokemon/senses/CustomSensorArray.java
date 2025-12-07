@@ -305,8 +305,8 @@ public class CustomSensorArray
         if (oppType2 != null) {
             effectiveness *= Type.getEffectivenessModifier(moveType, oppType2);
         }
-        double damage = DamageEquation.calculateDamage(new Move(action), this.agent.getMyTeamIdx(), myPokemonCore, oppPokemonCore, false,
-                    false, 0, effectiveness);
+        double damage = action.getPower() != null ? DamageEquation.calculateDamage(new Move(action), this.agent.getMyTeamIdx(), myPokemonCore, oppPokemonCore, false,
+                    false, 0, effectiveness) : 0d;
         // Normalize damage.
         feats.add(Math.min(damage / 1000.0, 1.0));
         addTypeOneHot(feats, null, null); // switch type placeholder
