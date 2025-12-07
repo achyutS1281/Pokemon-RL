@@ -291,12 +291,11 @@ public class CustomSensorArray
         feats.add(0d); // switch hp placeholder
         feats.add(normAccuracy(action.getAccuracy()));
         feats.add(normPriority(action.getPriority()));
-        double damage = DamageEquation.calculateDamage(moveCore, myTeamIdx, myPokemonCore, oppPokemonCore, false,
+        double damage = DamageEquation.calculateDamage(new Move(action), ourTeam.getBattleIdx(), myPokemonCore, oppPokemonCore, false,
                     false, 0, effectiveness);
 
         // Normalize damage.
-        sensors.set(0, idx++, Math.min(damage / 1000.0, 1.0));
-        feats.add()
+        feats.add(Math.min(damage / 1000.0, 1.0));
         addTypeOneHot(feats, null, null); // switch type placeholder
 
     }
