@@ -47,7 +47,7 @@ public class CustomSensorArray
         // - Priority (1)
         int moveFeatures = 3;
 
-        return pokemonFeatures + opponentFeatures + (moveFeatures * 4);
+        return pokemonFeatures + opponentFeatures + moveFeatures;
     }
 
     private int addPokemonFeatures(Matrix sensors, int idx, PokemonView pokemon) {
