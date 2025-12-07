@@ -58,9 +58,7 @@ public class PolicyAgent
         Sequential qFunction = new Sequential();
         qFunction.add(new Dense(inputSize, 128));
         qFunction.add(new ReLU());
-        qFunction.add(new Dense(128, 64));
-        qFunction.add(new ReLU());
-        qFunction.add(new Dense(64, 1));
+        qFunction.add(new Dense(128, 1));
 
         return qFunction;
     }
