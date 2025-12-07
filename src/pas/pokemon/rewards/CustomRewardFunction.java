@@ -126,25 +126,6 @@ public class CustomRewardFunction
             }
         }
 
-        // 4. Effectiveness Bonus (Reward Shaping)
-        // Reward using super effective moves
-        if (action != null && action.getCategory() != edu.bu.pas.pokemon.core.Move.Category.STATUS) {
-            edu.bu.pas.pokemon.core.enums.Type moveType = action.getType();
-            edu.bu.pas.pokemon.core.enums.Type oppType1 = oppPoke.getCurrentType1();
-            edu.bu.pas.pokemon.core.enums.Type oppType2 = oppPoke.getCurrentType2();
-
-            double effectiveness = edu.bu.pas.pokemon.core.enums.Type.getEffectivenessModifier(moveType, oppType1);
-            if (oppType2 != null) {
-                effectiveness *= edu.bu.pas.pokemon.core.enums.Type.getEffectivenessModifier(moveType, oppType2);
-            }
-
-            if (effectiveness > 1.0) {
-                reward += 5.0; // Bonus for super effective
-            } else if (effectiveness < 1.0) {
-                reward -= 1.0; // Small penalty for not effective
-            }
-        }
-
         // 5. Status Infliction Reward
         if (oppIdx == nextOppIdx) {
             // Non-Volatile Status (Sleep, Burn, etc.)

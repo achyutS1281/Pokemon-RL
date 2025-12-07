@@ -4,15 +4,16 @@ package src.pas.pokemon.senses;
 
 // JAVA PROJECT IMPORTS
 import edu.bu.pas.pokemon.agents.senses.SensorArray;
+import edu.bu.pas.pokemon.core.DamageEquation;
+import edu.bu.pas.pokemon.core.Move;
+import edu.bu.pas.pokemon.core.Pokemon;
 import edu.bu.pas.pokemon.core.Battle.BattleView;
 import edu.bu.pas.pokemon.core.Move.MoveView;
 import edu.bu.pas.pokemon.core.Move.Category;
 import edu.bu.pas.pokemon.core.Pokemon.PokemonView;
 import edu.bu.pas.pokemon.core.Team.TeamView;
-import edu.bu.pas.pokemon.core.enums.NonVolatileStatus;
 import edu.bu.pas.pokemon.core.enums.Stat;
 import edu.bu.pas.pokemon.core.enums.Type;
-import edu.bu.pas.pokemon.core.enums.Flag;
 import edu.bu.pas.pokemon.linalg.Matrix;
 import src.pas.pokemon.agents.PolicyAgent;
 
@@ -26,24 +27,19 @@ public class CustomSensorArray
     }
 
     public static int getInputSize() {
-        int numTypes = Type.values().length;
-        int numStats = Stat.values().length;
-        int numStatus = NonVolatileStatus.values().length;
-        int numCategories = Category.values().length;
-        int numFlags = Flag.values().length;
-
-        // My Pokemon: HP Ratio (1) + Type1 (N) + Type2 (N) + Stats (S) + Status (St) +
-        // Flags (F)
-        int pokemonFeatures = 1 + (2 * numTypes) + numStats + numStatus + numFlags;
-
-        // Opponent Pokemon: Same
-        int opponentFeatures = pokemonFeatures;
-
-        // Action: Power (1) + Accuracy (1) + Type (N) + Category (C) + Eff1 (1) + Eff2
-        // (1) + CombinedEff (1) + STAB (1) + Priority (1)
-        int actionFeatures = 1 + 1 + numTypes + numCategories + 4 + 1;
-
-        return pokemonFeatures + opponentFeatures + actionFeatures;
+        // Condensed Features:
+        // 1. My HP Ratio
+        // 2. Opp HP Ratio
+        // 3. Speed Advantage
+        // 4. Defensive Matchup
+        // 5. Offensive Matchup
+        // 6. Action - Expected Damage %
+        // 7. Action - Accuracy
+        // 8. Action - Priority
+        // 9. Action - Is Status
+        // 10. Action - Effectiveness
+        // 11. Action - STAB
+        return 11;
     }
 
     @Override
@@ -54,192 +50,135 @@ public class CustomSensorArray
 
         // Determine team indices
         int myTeamIdx = this.agent.getMyTeamIdx();
-        int oppTeamIdx;
-        if (myTeamIdx == 0) {
-            oppTeamIdx = 1;
-        } else {
-            oppTeamIdx = 0;
-        }
+        int oppTeamIdx = (myTeamIdx == 0) ? 1 : 0;
 
         TeamView myTeam = state.getTeamView(myTeamIdx);
         TeamView oppTeam = state.getTeamView(oppTeamIdx);
 
-        PokemonView myPokemon = myTeam.getActivePokemonView();
-        PokemonView oppPokemon = oppTeam.getActivePokemonView();
+        PokemonView myPokemonView = myTeam.getActivePokemonView();
+        PokemonView oppPokemonView = oppTeam.getActivePokemonView();
 
-        // My Pokemon Features
-
-        // HP Ratio
-        double myHpRatio = (double) myPokemon.getCurrentStat(Stat.HP) / myPokemon.getInitialStat(Stat.HP);
+        // 1. My HP Ratio
+        double myHpRatio = (double) myPokemonView.getCurrentStat(Stat.HP) / myPokemonView.getInitialStat(Stat.HP);
         sensors.set(0, idx++, myHpRatio);
 
-        // Type 1 (One-hot)
-        Type myType1 = myPokemon.getCurrentType1();
-        for (Type t : Type.values()) {
-            if (t == myType1) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
-        }
-
-        // Type 2 (One-hot)
-        Type myType2 = myPokemon.getCurrentType2();
-        for (Type t : Type.values()) {
-            if (t == myType2) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
-        }
-
-        for (Stat s : Stat.values()) {
-            if (s == Stat.HP) {
-                sensors.set(0, idx++, 0.0);
-            } else {
-                sensors.set(0, idx++, myPokemon.getStatMultiplier(s));
-            }
-        }
-
-        // Status (One-hot)
-        NonVolatileStatus myStatus = myPokemon.getNonVolatileStatus();
-        for (NonVolatileStatus s : NonVolatileStatus.values()) {
-            if (s == myStatus) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
-        }
-
-        // Volatile Status (Flags)
-        for (Flag f : Flag.values()) {
-            if (myPokemon.getFlag(f)) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
-        }
-
-        // Opponent Pokemon Features
-
-        // HP Ratio
-        double oppHpRatio = (double) oppPokemon.getCurrentStat(Stat.HP) / oppPokemon.getInitialStat(Stat.HP);
+        // 2. Opp HP Ratio
+        double oppHpRatio = (double) oppPokemonView.getCurrentStat(Stat.HP) / oppPokemonView.getInitialStat(Stat.HP);
         sensors.set(0, idx++, oppHpRatio);
 
-        // Type 1
-        Type oppType1 = oppPokemon.getCurrentType1();
-        for (Type t : Type.values()) {
-            if (t == oppType1) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
-        }
+        // 3. Speed Advantage ((MySpeed - OppSpeed) / 200.0) -> Scaled
+        double mySpeed = (double) myPokemonView.getCurrentStat(Stat.SPD);
+        double oppSpeed = (double) oppPokemonView.getCurrentStat(Stat.SPD);
+        double speedAdvantage = (mySpeed - oppSpeed) / 200.0;
+        // Clamp between -1 and 1
+        speedAdvantage = Math.max(-1.0, Math.min(1.0, speedAdvantage));
+        sensors.set(0, idx++, speedAdvantage);
 
-        // Type 2
-        Type oppType2 = oppPokemon.getCurrentType2();
-        for (Type t : Type.values()) {
-            if (t == oppType2) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
-        }
+        // Prepare Type Variables
+        Type myType1 = myPokemonView.getCurrentType1();
+        Type myType2 = myPokemonView.getCurrentType2();
+        Type oppType1 = oppPokemonView.getCurrentType1();
+        Type oppType2 = oppPokemonView.getCurrentType2();
 
-        // Stats
-        for (Stat s : Stat.values()) {
-            if (s == Stat.HP) {
-                sensors.set(0, idx++, 0.0);
-            } else {
-                sensors.set(0, idx++, oppPokemon.getStatMultiplier(s));
-            }
-        }
+        // 4. Defensive Matchup (How weak am I to opponent's types?)
+        // Max effectiveness of Opponent Types attacking Me
+        double maxDefWeakness = 0.0;
 
-        // Status
-        NonVolatileStatus oppStatus = oppPokemon.getNonVolatileStatus();
-        for (NonVolatileStatus s : NonVolatileStatus.values()) {
-            if (s == oppStatus) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
+        // Check Opp Type 1 vs Me
+        if (oppType1 != null) {
+            double eff = Type.getEffectivenessModifier(oppType1, myType1);
+            if (myType2 != null)
+                eff *= Type.getEffectivenessModifier(oppType1, myType2);
+            maxDefWeakness = Math.max(maxDefWeakness, eff);
         }
+        // Check Opp Type 2 vs Me
+        if (oppType2 != null) {
+            double eff = Type.getEffectivenessModifier(oppType2, myType1);
+            if (myType2 != null)
+                eff *= Type.getEffectivenessModifier(oppType2, myType2);
+            maxDefWeakness = Math.max(maxDefWeakness, eff);
+        }
+        // Normalize: Max normal weakness is 4.0.
+        sensors.set(0, idx++, maxDefWeakness / 4.0);
 
-        // Volatile Status (Flags)
-        for (Flag f : Flag.values()) {
-            if (oppPokemon.getFlag(f)) {
-                sensors.set(0, idx++, 1.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
+        // 5. Offensive Matchup (How strong am I against opponent?)
+        // Max effectiveness of My Types attacking Opponent
+        double maxOffStrength = 0.0;
+
+        // Check My Type 1 vs Opp
+        if (myType1 != null) {
+            double eff = Type.getEffectivenessModifier(myType1, oppType1);
+            if (oppType2 != null)
+                eff *= Type.getEffectivenessModifier(myType1, oppType2);
+            maxOffStrength = Math.max(maxOffStrength, eff);
         }
+        // Check My Type 2 vs Opp
+        if (myType2 != null) {
+            double eff = Type.getEffectivenessModifier(myType2, oppType1);
+            if (oppType2 != null)
+                eff *= Type.getEffectivenessModifier(myType2, oppType2);
+            maxOffStrength = Math.max(maxOffStrength, eff);
+        }
+        sensors.set(0, idx++, maxOffStrength / 4.0);
 
         // Action Features
-
         if (action != null) {
-            // Power (Normalized: Power / 200.0)
-            // Max power is usually around 150-250 (Explosion), so dividing by 200 keeps it
-            // in [0, 1] range mostly.
-            Integer power = action.getPower();
-            if (power != null) {
-                sensors.set(0, idx++, power / 200.0);
-            } else {
-                sensors.set(0, idx++, 0.0);
-            }
+            // Reconstruct Core Objects for Calculate Damage
+            // NOTE: We assume these factory/constructor methods exist based on
+            // documentation.
+            Pokemon myPokemonCore = Pokemon.fromView(myPokemonView);
+            Pokemon oppPokemonCore = Pokemon.fromView(oppPokemonView);
+            Move moveCore = new Move(action);
 
-            // Accuracy (Normalized: Accuracy / 100.0)
-            // Accuracy is 0-100, so dividing by 100 puts it in [0, 1].
-            Integer accuracy = action.getAccuracy();
-            if (accuracy != null) {
-                sensors.set(0, idx++, accuracy / 100.0);
-            } else {
-                sensors.set(0, idx++, 1.0); // Null usually means always hits (e.g. Aerial Ace)
-            }
+            // 6. Expected Damage % (Damage / OppCurrentHP)
+            double expectedDamage = 0.0;
+            if (action.getCategory() != Category.STATUS) {
+                // Use DamageEquation
+                // calculateDamage(Move move, Pokemon caster, Pokemon target, int critical,
+                // double randomScaling)
+                // Critical = 1 (Normal), Random = 1.0 (Max damage potential) or 0.85 (Min) ->
+                // Using 1.0
+                int dmg = DamageEquation.calculateDamage(moveCore, myPokemonCore, oppPokemonCore, 1, 1.0);
 
-            // Type (One-hot)
-            Type moveType = action.getType();
-            for (Type t : Type.values()) {
-                if (t == moveType) {
-                    sensors.set(0, idx++, 1.0);
+                double oppCurrentHP = (double) oppPokemonView.getCurrentStat(Stat.HP);
+                if (oppCurrentHP > 0) {
+                    expectedDamage = (double) dmg / oppCurrentHP;
+                    expectedDamage = Math.min(1.0, expectedDamage); // Cap at 100% kill
                 } else {
-                    sensors.set(0, idx++, 0.0);
+                    expectedDamage = 1.0; // Already dead?
                 }
             }
+            sensors.set(0, idx++, expectedDamage);
 
-            // Category (One-hot)
-            Category category = action.getCategory();
-            for (Category c : Category.values()) {
-                if (c == category) {
-                    sensors.set(0, idx++, 1.0);
-                } else {
-                    sensors.set(0, idx++, 0.0);
-                }
-            }
-            // Effectiveness against Opponent Type 1
-            double eff1 = Type.getEffectivenessModifier(moveType, oppType1);
-            sensors.set(0, idx++, eff1);
-
-            // Effectiveness against Opponent Type 2
-            double eff2 = 1.0;
-            if (oppType2 != null) {
-                eff2 = Type.getEffectivenessModifier(moveType, oppType2);
-            }
-            sensors.set(0, idx++, eff2);
-
-            // Combined Effectiveness (0.25 to 4.0)
-            sensors.set(0, idx++, eff1 * eff2);
-
-            // STAB
-            boolean stab = (moveType == myType1) || (moveType == myType2);
-            if (stab) {
-                sensors.set(0, idx++, 1.5);
+            // 7. Accuracy
+            Integer acc = action.getAccuracy();
+            if (acc != null) {
+                sensors.set(0, idx++, (double) acc / 100.0);
             } else {
-                sensors.set(0, idx++, 1.0);
+                sensors.set(0, idx++, 1.0); // Infinite accuracy
             }
 
-            // Priority
+            // 8. Priority
             sensors.set(0, idx++, (double) action.getPriority());
 
+            // 9. Is Status Move
+            sensors.set(0, idx++, (action.getCategory() == Category.STATUS) ? 1.0 : 0.0);
+
+            // 10. Effectiveness
+            double eff = Type.getEffectivenessModifier(action.getType(), oppType1);
+            if (oppType2 != null)
+                eff *= Type.getEffectivenessModifier(action.getType(), oppType2);
+            sensors.set(0, idx++, eff / 4.0); // Normalize
+
+            // 11. STAB
+            boolean stab = (action.getType() == myType1) || (action.getType() == myType2);
+            sensors.set(0, idx++, stab ? 1.0 : 0.0);
+
+        } else {
+            // Null action (e.g. at start of turn or error), fill 0s
+            for (int i = 0; i < 6; i++) {
+                sensors.set(0, idx++, 0.0);
+            }
         }
 
         return sensors;
