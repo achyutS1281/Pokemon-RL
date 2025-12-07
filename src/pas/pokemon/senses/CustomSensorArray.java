@@ -253,6 +253,7 @@ public class CustomSensorArray
             addTypeOneHot(feats, null, null);
             feats.add(0d); // accuracy
             feats.add(0d); // priority
+            feats.add(0d);
             return;
         }
 
@@ -278,6 +279,7 @@ public class CustomSensorArray
             feats.add(target == null ? 0d : hpFraction(target));
             feats.add(0d); // accuracy
             feats.add(0d); // priority placeholder (Dim = 1)
+            feats.add(0d);
             addTypeOneHot(feats, target == null ? null : target.getCurrentType1(), target == null ? null : target.getCurrentType2());
             return;
         }
@@ -288,7 +290,14 @@ public class CustomSensorArray
         feats.add(0d); // switch hp placeholder
         feats.add(normAccuracy(action.getAccuracy()));
         feats.add(normPriority(action.getPriority()));
+        double damage = DamageEquation.calculateDamage(moveCore, myTeamIdx, myPokemonCore, oppPokemonCore, false,
+                    false, 0, effectiveness);
+
+        // Normalize damage.
+        sensors.set(0, idx++, Math.min(damage / 1000.0, 1.0));
+        feats.add()
         addTypeOneHot(feats, null, null); // switch type placeholder
+
     }
     private void addSpeedFeatures(final List<Double> feats,
                                   final PokemonView ours,
