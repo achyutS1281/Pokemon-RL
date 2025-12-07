@@ -291,9 +291,22 @@ public class CustomSensorArray
         feats.add(0d); // switch hp placeholder
         feats.add(normAccuracy(action.getAccuracy()));
         feats.add(normPriority(action.getPriority()));
-        double damage = DamageEquation.calculateDamage(new Move(action), ourTeam.getBattleIdx(), myPokemonCore, oppPokemonCore, false,
-                    false, 0, effectiveness);
+        Move moveCore = new Move(action);
+        Pokemon myPokemonCore = Pokemon.fromView(ourActive);
+        Pokemon oppPokemonCore = Pokemon.fromView(oppActive);
 
+        // Expected Damage
+        double effectiveness = 1.0;
+        Type moveType = moveCore.getType();
+        Type oppType1 = oppPokemonCore.getCurrentType1();
+        Type oppType2 = oppPokemonCore.getCurrentType2();
+
+        effectiveness *= Type.getEffectivenessModifier(moveType, oppType1);
+        if (oppType2 != null) {
+            effectiveness *= Type.getEffectivenessModifier(moveType, oppType2);
+        }
+        double damage = DamageEquation.calculateDamage(new Move(action), this.agent.getMyTeamIdx(), myPokemonCore, oppPokemonCore, false,
+                    false, 0, effectiveness);
         // Normalize damage.
         feats.add(Math.min(damage / 1000.0, 1.0));
         addTypeOneHot(feats, null, null); // switch type placeholder
