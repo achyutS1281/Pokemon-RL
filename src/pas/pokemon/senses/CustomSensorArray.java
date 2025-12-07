@@ -284,6 +284,7 @@ public class CustomSensorArray
             return;
         }
 
+
         // If it's a regular move, we need to add the move-specific features (Dim = 1 + 1 + 1 + 30 + 1 + 1 + 1 + 3 + 30 + 1 + 1 = 71)
         feats.add(0d); // isSwitch
         feats.add(0d); // switch slot placeholder
