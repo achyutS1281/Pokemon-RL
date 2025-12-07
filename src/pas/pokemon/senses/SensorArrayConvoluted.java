@@ -1,4 +1,4 @@
-package pas.pokemon.senses;
+package src.pas.pokemon.senses;
 
 
 // SYSTEM IMPORTS

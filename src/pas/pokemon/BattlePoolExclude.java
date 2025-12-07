@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package pas.pokemon;
+package src.pas.pokemon;
 
 import edu.bu.pas.pokemon.core.Agent;
 import edu.bu.pas.pokemon.execution.BattleDriver;

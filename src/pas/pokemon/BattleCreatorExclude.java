@@ -1,4 +1,4 @@
-package pas.pokemon;
+package src.pas.pokemon;
 
 // SYSTEM IMPORTS
 
