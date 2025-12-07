@@ -13,7 +13,7 @@ import edu.bu.pas.pokemon.core.SwitchMove;
 import edu.bu.pas.pokemon.core.Team.TeamView;
 import edu.bu.pas.pokemon.core.DamageEquation;
 import edu.bu.pas.pokemon.core.enums.*;
-import pas.pokemon.agents.PolicyAgent;
+import src.pas.pokemon.agents.PolicyAgent;
 import edu.bu.pas.pokemon.linalg.Matrix;
 
 import java.util.LinkedList;
