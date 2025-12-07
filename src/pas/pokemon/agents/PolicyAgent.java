@@ -33,7 +33,7 @@ public class PolicyAgent
     }
 
     // matches CustomSensorArray output length
-    private static final int FEATURE_DIM = 628;
+    private static final int FEATURE_DIM = 172;
     private final Random rng = new Random();
 
     // Epsilon-greedy Hyperparameters
