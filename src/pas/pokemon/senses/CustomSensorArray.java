@@ -132,7 +132,7 @@ public class CustomSensorArray
 
             // 6. Expected Damage % (Damage / OppCurrentHP)
             double expectedDamage = 0.0;
-            if (action.getCategory() != Category.STATUS) {
+            if (action.getCategory() != Category.STATUS && action.getPower() != null) {
                 // Use DamageEquation
                 // calculateDamage(Move move, Pokemon caster, Pokemon target, int critical,
                 // double randomScaling)
