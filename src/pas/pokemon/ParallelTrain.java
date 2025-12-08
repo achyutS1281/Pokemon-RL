@@ -336,8 +336,7 @@ public class ParallelTrain
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws Exception {
         // overwrite stdout cause there will be a TON of printouts if you don't
         PrintStream out = System.out;
 
@@ -565,7 +564,16 @@ public class ParallelTrain
             Pair<Double, Double> statsPair = playEvalGames(agent, enemyAgents, rewardFunction, ns, rng, out);
             double avgUtil = statsPair.getFirst();
             double avgNumWins = statsPair.getSecond();
-
+            if (cycleIdx % 10 == 0) { // Optional: Update enemy every 10 cycles to stabilize
+                for (Agent enemy : enemyAgents) {
+                    if (enemy instanceof PolicyAgent) {
+                        PolicyAgent pEnemy = (PolicyAgent) enemy;
+                        pEnemy.getModel().load(checkpointFileBase + (cycleIdx + offset) + ".model");
+                        pEnemy.stepCount = ((PolicyAgent) agent).stepCount;
+                    }
+                }
+                System.out.println("[INFO] Enemy Agents Updated to Match Learner.");
+            }
             // use the variable out to actually write to console
             out.println("after cycle=" + cycleIdx + " avg(utility)=" + avgUtil + " avg(num_wins)=" + avgNumWins);
             ((PolicyAgent) agent).stepCount += 1;
