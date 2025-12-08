@@ -553,6 +553,13 @@ public class ParallelTrain
         **/
         List<Agent> benchmarkEnemies = new LinkedList<>();
         benchmarkEnemies.add(new RandomAgent());
+        boolean policyAgentFound = false;
+        for (Agent enemy : enemyAgents) {
+            if (enemy instanceof PolicyAgent) {
+                policyAgentFound = true;
+                break;
+            }
+        }
         for(int cycleIdx = 0; cycleIdx < numCycles; ++cycleIdx)
         {
             agent.train();
@@ -582,14 +589,6 @@ public class ParallelTrain
             }
             // use the variable out to actually write to console
             out.println("after cycle=" + cycleIdx + " avg(utility)=" + avgUtil + " avg(num_wins)=" + avgNumWins);
-
-            boolean policyAgentFound = false;
-            for (Agent enemy : enemyAgents) {
-                if (enemy instanceof PolicyAgent) {
-                    policyAgentFound = true;
-                    break;
-                }
-            }
             if (policyAgentFound) {
 
                 if (cycleIdx % 50 == 0) {
