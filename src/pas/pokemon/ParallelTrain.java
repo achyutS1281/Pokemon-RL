@@ -501,7 +501,12 @@ public class ParallelTrain
                 enemyAgents.add(enemyAgent);
             }
         }
-
+        for (Agent enemy : enemyAgents) {
+            if (enemy instanceof PolicyAgent) {
+                PolicyAgent pEnemy = (PolicyAgent) enemy;
+                pEnemy.getModel().load(ns.get("inFile"));
+            }
+        }
         // some training machinery
         Pair<Optimizer, LossFunction> adjustmentPair = getModelAdjustmentInfrastructure(
             ns,
