@@ -234,12 +234,12 @@ public class PolicyAgent
         {
             return null;
         }
-
-        // Sacking Pokemon condition
-        if(defensiveMultiplier(oppLastMove, myTeam.getPokemonView(bestIdx)) > 1.5 && sackIdx != -1)
-        {
-            return sackIdx;
-        }
+//
+//        // Sacking Pokemon condition
+//        if(defensiveMultiplier(oppLastMove, myTeam.getPokemonView(bestIdx)) > 1.5 && sackIdx != -1)
+//        {
+//            return sackIdx;
+//        }
 
         return bestIdx;
     }
