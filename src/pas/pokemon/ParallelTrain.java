@@ -593,7 +593,7 @@ public class ParallelTrain
             if (policyAgentFound) {
 
                 if (cycleIdx % 50 == 0) {
-                    System.out.println("--- RUNNING BENCHMARK TEST ---");
+                    out.println("--- RUNNING BENCHMARK TEST ---");
                     // Reuse your existing playEvalGames method
                     Pair<Double, Double> benchmarkStats = playEvalGames(
                         agent,
@@ -604,9 +604,9 @@ public class ParallelTrain
                         out
                     );
 
-                    System.out.println("[BENCHMARK] Cycle " + cycleIdx +
+                    out.println("[BENCHMARK] Cycle " + cycleIdx +
                                        " vs RandomAgent: Win Rate = " + benchmarkStats.getSecond());
-                    System.out.println("------------------------------");
+                    out.println("------------------------------");
                 }
             }
 
