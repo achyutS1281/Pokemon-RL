@@ -551,7 +551,8 @@ public class ParallelTrain
             rng
         );
         **/
-
+        List<Agent> benchmarkEnemies = new LinkedList<>();
+        benchmarkEnemies.add(new RandomAgent());
         for(int cycleIdx = 0; cycleIdx < numCycles; ++cycleIdx)
         {
             agent.train();
@@ -581,6 +582,34 @@ public class ParallelTrain
             }
             // use the variable out to actually write to console
             out.println("after cycle=" + cycleIdx + " avg(utility)=" + avgUtil + " avg(num_wins)=" + avgNumWins);
+
+            boolean policyAgentFound = false;
+            for (Agent enemy : enemyAgents) {
+                if (enemy instanceof PolicyAgent) {
+                    policyAgentFound = true;
+                    break;
+                }
+            }
+            if (policyAgentFound) {
+
+                if (cycleIdx % 50 == 0) {
+                    System.out.println("--- RUNNING BENCHMARK TEST ---");
+                    // Reuse your existing playEvalGames method
+                    Pair<Double, Double> benchmarkStats = playEvalGames(
+                        agent,
+                        benchmarkEnemies,
+                        rewardFunction,
+                        ns,
+                        rng,
+                        out
+                    );
+
+                    System.out.println("[BENCHMARK] Cycle " + cycleIdx +
+                                       " vs RandomAgent: Win Rate = " + benchmarkStats.getSecond());
+                    System.out.println("------------------------------");
+                }
+            }
+
             ((PolicyAgent) agent).stepCount += 1;
         }
     }
