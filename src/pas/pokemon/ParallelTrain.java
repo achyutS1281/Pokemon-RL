@@ -577,7 +577,7 @@ public class ParallelTrain
                         pEnemy.stepCount = ((PolicyAgent) agent).stepCount;
                     }
                 }
-                System.out.println("[INFO] Enemy Agents Updated to Match Learner.");
+                out.println("[INFO] Enemy Agents Updated to Match Learner.");
             }
             // use the variable out to actually write to console
             out.println("after cycle=" + cycleIdx + " avg(utility)=" + avgUtil + " avg(num_wins)=" + avgNumWins);

@@ -38,8 +38,8 @@ public class PolicyAgent
 
     // Epsilon-greedy Hyperparameters
     private double epsilonStart = 0.30;
-    private double epsilonEnd = 0.05;
-    private double epsilonDecay = 0.999;
+    private double epsilonEnd = 0.02;
+    private double epsilonDecay = 0.998;
     private double epsilon = epsilonStart;
     public long stepCount = 0;
 
