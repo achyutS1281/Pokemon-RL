@@ -55,6 +55,7 @@ import edu.bu.pas.pokemon.nn.models.Sequential;
 import edu.bu.pas.pokemon.nn.optimizers.*;
 import edu.bu.pas.pokemon.utils.Triple;
 import edu.bu.pas.pokemon.utils.Pair;
+import src.pas.pokemon.agents.PolicyAgent;
 
 
 public class ParallelTrain
@@ -567,6 +568,7 @@ public class ParallelTrain
 
             // use the variable out to actually write to console
             out.println("after cycle=" + cycleIdx + " avg(utility)=" + avgUtil + " avg(num_wins)=" + avgNumWins);
+            ((PolicyAgent) agent).stepCount += 1;
         }
     }
 }

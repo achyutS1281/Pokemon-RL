@@ -41,7 +41,7 @@ public class PolicyAgent
     private double epsilonEnd = 0.05;
     private double epsilonDecay = 0.999;
     private double epsilon = epsilonStart;
-    private long stepCount = 0;
+    public long stepCount = 0;
 
     public void initializeSenses(Namespace args)
     {
@@ -248,7 +248,6 @@ public class PolicyAgent
     public MoveView getMove(BattleView view)
     {
         // Epsilon-greedy action selection with decaying epsilon
-        this.stepCount += 1;
         this.epsilon = Math.max(epsilonEnd, epsilonStart * Math.pow(epsilonDecay, this.stepCount));
 
         // Exploration Step (random valid move)
