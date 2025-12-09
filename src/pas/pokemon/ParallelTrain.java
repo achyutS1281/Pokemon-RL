@@ -459,7 +459,7 @@ public class ParallelTrain
                 .setDefault(1)
                 .help("number of worker threads to use (so will use <num_threads> + 1 total threads)");
         parser.addArgument("--epsilon")
-                .type(int.class)
+                .type(Double.class)
                 .setDefault(0.3)
                 .help("epsilon value for epsilon-greedy action selection during training");
         
