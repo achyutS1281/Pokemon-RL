@@ -567,6 +567,7 @@ public class ParallelTrain
                 break;
             }
         }
+        final int numOriginalEnemies = enemyAgents.size();
         for(int cycleIdx = 0; cycleIdx < numCycles; ++cycleIdx)
         {
             agent.train();
@@ -587,7 +588,8 @@ public class ParallelTrain
             // use the variable out to actually write to console
             out.println("after cycle=" + cycleIdx + " avg(utility)=" + avgUtil + " avg(num_wins)=" + avgNumWins);
             if (cycleIdx % 10 == 0) { // Optional: Update enemy every 10 cycles to stabilize
-                for (Agent enemy : enemyAgents) {
+                for (int i = 0; i < numOriginalEnemies; i++) {
+                    Agent enemy = enemyAgents.get(i);
                     if (enemy instanceof PolicyAgent) {
                         PolicyAgent pEnemy = (PolicyAgent) enemy;
                         pEnemy.getModel().load(checkpointFileBase + (cycleIdx + offset) + ".model");
@@ -613,6 +615,22 @@ public class ParallelTrain
                     out.println("[BENCHMARK] Cycle " + cycleIdx +
                                        " vs RandomAgent: Utility = " + benchmarkStats.getFirst() + ", Win Rate = " + benchmarkStats.getSecond());
                     out.println("------------------------------");
+                }
+                if (cycleIdx > 0 && cycleIdx % 20 == 0) {
+                    try {
+                        Agent historyAgent = getAgent("src.pas.pokemon.agents.PolicyAgent");
+                        historyAgent.initialize(ns);
+                        NeuralQAgent currentNeural = (NeuralQAgent) agent;
+                        NeuralQAgent historyNeural = (NeuralQAgent) historyAgent;
+                        historyNeural.getModel().load(checkpointFileBase + (cycleIdx + offset) + ".model");
+                        if (historyAgent instanceof PolicyAgent) {
+                            ((PolicyAgent) historyAgent).stepCount = 1000000; // Forces epsilon to min
+                        }
+                        enemyAgents.add(historyAgent);
+                        System.out.println("[LEAGUE] Added a Past Self (Cycle " + cycleIdx + ") to the enemy pool.");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
