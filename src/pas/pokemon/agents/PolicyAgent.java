@@ -37,10 +37,10 @@ public class PolicyAgent
     private final Random rng = new Random();
 
     // Epsilon-greedy Hyperparameters
-    private double epsilonStart = 0.30;
-    private double epsilonEnd = 0.02;
+    public double epsilonStart = 0.30;
+    public double epsilonEnd = 0.02;
     private double epsilonDecay = 0.998;
-    private double epsilon = epsilonStart;
+    public double epsilon = epsilonStart;
     public long stepCount = 0;
 
     public void initializeSenses(Namespace args)

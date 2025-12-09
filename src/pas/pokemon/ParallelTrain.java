@@ -63,6 +63,8 @@ public class ParallelTrain
 {
 
 
+    private static NeuralQAgent agent;
+
     public static Agent getAgent(String agentClassName)
     {
         Agent agent = null;
@@ -456,6 +458,10 @@ public class ParallelTrain
                 .type(int.class)
                 .setDefault(1)
                 .help("number of worker threads to use (so will use <num_threads> + 1 total threads)");
+        parser.addArgument("--epsilon")
+                .type(int.class)
+                .setDefault(0.3)
+                .help("epsilon value for epsilon-greedy action selection during training");
         
 
 
@@ -520,7 +526,8 @@ public class ParallelTrain
             ns.get("maxBufferSize"),
             rng
         );
-
+        ((PolicyAgent) agent).epsilon = ns.get("epsilon");
+        ((PolicyAgent) agent).epsilonStart = ns.get("epsilon");
         /**
         // I had originally intended to recycle the ThreadPool and just swap the BattlePool that was generating
         // Battle instances on the fly. It would be faster than spawning/killing the same number of threads over and
