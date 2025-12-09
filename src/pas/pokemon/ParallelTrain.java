@@ -585,13 +585,13 @@ public class ParallelTrain
                         PolicyAgent pEnemy = (PolicyAgent) enemy;
                         pEnemy.getModel().load(checkpointFileBase + (cycleIdx + offset) + ".model");
                         pEnemy.stepCount = ((PolicyAgent) agent).stepCount;
+                        out.println("[INFO] Enemy Agents Updated to Match Learner.");
                     }
                 }
-                out.println("[INFO] Enemy Agents Updated to Match Learner.");
             }
             if (policyAgentFound) {
 
-                if (cycleIdx % 50 == 0) {
+                if (cycleIdx % 10 == 0) {
                     out.println("--- RUNNING BENCHMARK TEST ---");
                     // Reuse your existing playEvalGames method
                     Pair<Double, Double> benchmarkStats = playEvalGames(
@@ -604,7 +604,7 @@ public class ParallelTrain
                     );
 
                     out.println("[BENCHMARK] Cycle " + cycleIdx +
-                                       " vs RandomAgent: Win Rate = " + benchmarkStats.getSecond());
+                                       " vs RandomAgent: Utility = " + benchmarkStats.getFirst() + ", Win Rate = " + benchmarkStats.getSecond());
                     out.println("------------------------------");
                 }
             }
