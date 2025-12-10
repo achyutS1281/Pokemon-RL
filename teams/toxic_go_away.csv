@@ -1,0 +1,7 @@
+dexIdx,level,move1,move2,move3,move4,hpIV,atkIV,defIV,spdIV,spatkIV,spdefIV,hpEV,atkEV,defEV,spdEV,spatkEV,spdefEV
+18,100,Whirlwind,Toxic,Sand-Attack,Agility,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+22,100,Whirlwind,Toxic,Leer,Agility,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+130,100,Whirlwind,Toxic,Leer,Thunder Wave,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+142,100,Whirlwind,Toxic,Double Team,Substitute,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+146,100,Whirlwind,Toxic,Agility,Reflect,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+85,100,Whirlwind,Toxic,Agility,Growl,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535

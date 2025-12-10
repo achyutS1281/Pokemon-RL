@@ -1,0 +1,7 @@
+dexIdx,level,move1,move2,move3,move4,hpIV,atkIV,defIV,spdIV,spatkIV,spdefIV,hpEV,atkEV,defEV,spdEV,spatkEV,spdefEV
+18,100,Whirlwind,Sand-Attack,Reflect,Toxic,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+130,100,Whirlwind,Thunder Wave,Surf,Hyper Beam,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+103,100,Sleep Powder,Psychic,Explosion,Stun Spore,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+91,100,Clamp,Whirlwind,Blizzard,Explosion,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+112,100,Earthquake,Rock Slide,Substitute,Tail Whip,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+101,100,Thunder Wave,Screech,Light Screen,Explosion,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535

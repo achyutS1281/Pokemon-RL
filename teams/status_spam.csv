@@ -1,0 +1,7 @@
+dexIdx,level,move1,move2,move3,move4,hpIV,atkIV,defIV,spdIV,spatkIV,spdefIV,hpEV,atkEV,defEV,spdEV,spatkEV,spdefEV
+103,100,Sleep Powder,Stun Spore,Toxic,Explosion,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+124,100,Lovely Kiss,Blizzard,Toxic,Psychic,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+80,100,Thunder Wave,Blizzard,Toxic,Amnesia,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+97,100,Hypnosis,Thunder Wave,Toxic,Reflect,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+49,100,Sleep Powder,Stun Spore,Toxic,Psychic,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+51,100,Slash,Toxic,Agility,Substitute,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535

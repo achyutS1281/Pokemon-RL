@@ -1,0 +1,7 @@
+dexIdx,level,move1,move2,move3,move4,hpIV,atkIV,defIV,spdIV,spatkIV,spdefIV,hpEV,atkEV,defEV,spdEV,spatkEV,spdefEV
+150,100,Psychic,Ice Beam,Thunderbolt,Recover,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+65,100,Psychic,Thunder Wave,Seismic Toss,Recover,15,15,15,15,15,15,65535,65534,65535,65535,65535,65535
+143,100,Body Slam,Earthquake,Hyper Beam,Self-Destruct,15,15,15,15,15,15,65535,65534,65535,65535,65535,65535
+128,100,Body Slam,Blizzard,Earthquake,Hyper Beam,15,15,15,15,15,15,1,1,1,1,1,1
+113,100,Soft-Boiled,Thunder Wave,Ice Beam,Seismic Toss,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+131,100,Blizzard,Surf,Thunderbolt,Body Slam,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535

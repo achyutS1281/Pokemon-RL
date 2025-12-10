@@ -1,0 +1,7 @@
+dexIdx,level,move1,move2,move3,move4,hpIV,atkIV,defIV,spdIV,spatkIV,spdefIV,hpEV,atkEV,defEV,spdEV,spatkEV,spdefEV
+94,100,Lick,Hypnosis,Thunderbolt,Mega Drain,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+34,100,Earthquake,Rock Slide,Blizzard,Thunderbolt,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+68,100,Submission,Earthquake,Rock Slide,Body Slam,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+150,100,Psychic,Ice Beam,Thunderbolt,Recover,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+113,100,Thunder Wave,Ice Beam,Hyper Beam,Seismic Toss,15,15,15,15,15,15,65535,65535,65533,65535,65535,65535
+143,100,Body Slam,Hyper Beam,Rock Slide,Thunderbolt,15,15,15,15,15,15,65535,65535,65535,65535,64505,65535

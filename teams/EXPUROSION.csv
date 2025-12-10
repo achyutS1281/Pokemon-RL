@@ -1,0 +1,7 @@
+dexIdx,level,move1,move2,move3,move4,hpIV,atkIV,defIV,spdIV,spatkIV,spdefIV,hpEV,atkEV,defEV,spdEV,spatkEV,spdefEV
+101,100,Explosion,null,null,null,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+101,100,Explosion,null,null,null,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+101,100,Explosion,null,null,null,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+101,100,Explosion,null,null,null,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+101,100,Explosion,null,null,null,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
+68,100,Submission,Rock Slide,Fire Blast,Earthquake,15,15,15,15,15,15,65535,65535,65535,65535,65535,65535
